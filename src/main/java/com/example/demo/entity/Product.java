@@ -1,6 +1,15 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Product {
 
-	private int id;
+	@Id
+   private int	id;
+   private String name;
+   private String description;
+	private int price; 
+	
 }
