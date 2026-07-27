@@ -23,7 +23,7 @@ public class Product {
    private String url;
    private Boolean available;
    private Integer preparationTime;
-   private String status;
+
    
    //@ManyToOne
   // @JoinColumn(name="category_id")
