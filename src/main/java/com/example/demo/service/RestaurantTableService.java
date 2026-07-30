@@ -11,7 +11,7 @@ public interface RestaurantTableService {
 
     List<RestaurantTable> getAllTables();
 
-    Optional<RestaurantTable> getTableById(Integer id);
+    RestaurantTable getTableById(Integer id);
 
     RestaurantTable updateTable(Integer id, RestaurantTable table);
 
