@@ -20,10 +20,10 @@ public class Product {
    private int	id;
    private String name;
    private String description;
-   private int price; 
+   private Integer price; 
    private String url;
    private Boolean available;
-   private int preparationTime;
+   private Integer preparationTime;
    private LocalDate createdAt;
      
    //@ManyToOne
