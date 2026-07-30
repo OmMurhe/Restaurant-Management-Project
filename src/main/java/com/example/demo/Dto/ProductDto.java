@@ -14,7 +14,7 @@ public class ProductDto {
 	   private String description;
 	 
 	 @NotNull(message = "Plese Enter The Price")
-	   private int price; 
+	   private Integer price; 
 	 
 	 @NotBlank(message = "Plese Provide The URL OF Image")
 	   private String url;
@@ -23,6 +23,6 @@ public class ProductDto {
 	   private Boolean available;
 	 
 	 @NotNull(message = "Plese Provide The PreparationTime")
-	   private int preparationTime;
+	   private Integer preparationTime;
 	
 }
