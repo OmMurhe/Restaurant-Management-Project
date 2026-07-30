@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.example.demo.exception.CustomerServiceException;
 import com.example.demo.exception.ProductServiceException;
 
 @ControllerAdvice
@@ -17,6 +18,10 @@ public class GlobleExceptionHandler {
 		return new ResponseEntity<>(productException.getMessage(),productException.getHttpStatus());
 	}
 	
+	@ExceptionHandler
+	public ResponseEntity handleCustomerServiceException(CustomerServiceException customerException) {
+		return new ResponseEntity<>(customerException.getMessage(),customerException.getHttpStatus());
+	}
 	@ExceptionHandler
 	public ResponseEntity handleException(Exception e) {
 		return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
