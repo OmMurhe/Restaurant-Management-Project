@@ -15,7 +15,7 @@ public class GlobleExceptionHandler {
 	
 	@ExceptionHandler
 	public ResponseEntity handleProductServiceException(ProductServiceException productException) {
-		return new ResponseEntity<>(productException.getMessage(),productException.getHttpStatus());
+		return new ResponseEntity<>(productException.getErrorMessage(),productException.getHttpStatus());
 	}
 	
 	@ExceptionHandler
