@@ -51,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<CustomerDto> getAllCustomers() {
 		List<Customer> customers = customerRepo.findAll();
 		if (customers.isEmpty()) {
-			throw new ProductServiceException("Customer not fount", HttpStatus.NOT_FOUND);
+			throw new CustomerServiceException("Customer not fount", HttpStatus.NOT_FOUND);
 		}
 		List<CustomerDto> customerDto = customers.stream().map(p -> CustomerMapper.mapToCustomerDto(p))
 				.collect(Collectors.toList());
