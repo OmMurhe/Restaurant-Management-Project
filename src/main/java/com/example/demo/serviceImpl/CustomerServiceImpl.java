@@ -1,35 +1,32 @@
 package com.example.demo.serviceImpl;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Dto.CustomerDto;
-
 import com.example.demo.entity.Customer;
-
 import com.example.demo.exception.CustomerServiceException;
-import com.example.demo.exception.ProductServiceException;
 import com.example.demo.mapper.CustomerMapper;
-
 import com.example.demo.repositary.CustomerRepo;
 import com.example.demo.service.CustomerService;
+
+
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-	private CustomerRepo customerRepo;
+	private final CustomerRepo customerRepo;
 
 	public CustomerServiceImpl(CustomerRepo customerRepo) {
 		this.customerRepo = customerRepo;
-
 	}
 
 	@Override
 	public CustomerDto addCustomer(CustomerDto dto) {
+
 		if (customerRepo.existsByEmail(dto.getEmail())) {
 			throw new CustomerServiceException("Email already exists", HttpStatus.CONFLICT);
 		}
@@ -40,50 +37,61 @@ public class CustomerServiceImpl implements CustomerService {
 
 		Customer customer = CustomerMapper.mapToCustomer(dto);
 
-		customer.setCreatedAt(LocalDateTime.now());
-
-		Customer savedCustomer = customerRepo.save(customer);
-
-		return CustomerMapper.mapToCustomerDto(savedCustomer);
+		try {
+			Customer saved = customerRepo.save(customer);
+			return CustomerMapper.mapToCustomerDto(saved);
+		} catch (DataIntegrityViolationException e) {
+			throw new CustomerServiceException("Duplicate email or mobile", HttpStatus.CONFLICT);
+		}
 	}
 
 	@Override
 	public List<CustomerDto> getAllCustomers() {
-		List<Customer> customers = customerRepo.findAll();
-		if (customers.isEmpty()) {
-			throw new CustomerServiceException("Customer not fount", HttpStatus.NOT_FOUND);
-		}
-		List<CustomerDto> customerDto = customers.stream().map(p -> CustomerMapper.mapToCustomerDto(p))
-				.collect(Collectors.toList());
-		return customerDto;
-
+		return customerRepo.findAll()
+				.stream()
+				.map(CustomerMapper::mapToCustomerDto)
+				.toList();
 	}
 
 	@Override
 	public CustomerDto getCustomer(int id) {
 		Customer customer = customerRepo.findById(id)
 				.orElseThrow(() -> new CustomerServiceException("Customer not found", HttpStatus.NOT_FOUND));
-		CustomerDto dto = CustomerMapper.mapToCustomerDto(customer);
-		return dto;
-	}
 
-	@Override
-	public CustomerDto updateCustomer(int id, CustomerDto dto) {
-		Customer customer = customerRepo.findById(id)
-				.orElseThrow(() -> new CustomerServiceException("Customer not found", HttpStatus.NOT_FOUND));
-		customer.setName(dto.getName());
-		customer.setEmail(dto.getEmail());
-		customer.setMobile(dto.getMobile());
-
-		Customer update = customerRepo.save(customer);
 		return CustomerMapper.mapToCustomerDto(customer);
 	}
 
 	@Override
-	public void deleteCustomer(int id) {
-		customerRepo.findById(id).orElseThrow(() -> new CustomerServiceException("Customer not found", HttpStatus.NOT_FOUND));
-		customerRepo.deleteById(id);
+	public CustomerDto updateCustomer(int id, CustomerDto dto) {
 
+		Customer customer = customerRepo.findById(id)
+				.orElseThrow(() -> new CustomerServiceException("Customer not found", HttpStatus.NOT_FOUND));
+
+		if (customerRepo.findByEmailAndIdNot(dto.getEmail(), id).isPresent()) {
+			throw new CustomerServiceException("Email already in use", HttpStatus.CONFLICT);
+		}
+
+		if (customerRepo.findByMobileAndIdNot(dto.getMobile(), id).isPresent()) {
+			throw new CustomerServiceException("Mobile already in use", HttpStatus.CONFLICT);
+		}
+
+		CustomerMapper.updateCustomerFromDto(dto, customer);
+
+		try {
+			Customer updated = customerRepo.save(customer);
+			return CustomerMapper.mapToCustomerDto(updated);
+		} catch (DataIntegrityViolationException e) {
+			throw new CustomerServiceException("Duplicate email or mobile", HttpStatus.CONFLICT);
+		}
 	}
 
+	@Override
+	public void deleteCustomer(int id) {
+
+		if (!customerRepo.existsById(id)) {
+			throw new CustomerServiceException("Customer not found", HttpStatus.NOT_FOUND);
+		}
+
+		customerRepo.deleteById(id);
+	}
 }

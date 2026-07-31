@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Dto.CustomerDto;
@@ -18,6 +19,7 @@ import com.example.demo.service.CustomerService;
 import jakarta.validation.Valid;
 
 @RestController
+@RequestMapping("customer")
 public class CustomerController {
 
 	private CustomerService customerService;
@@ -26,28 +28,28 @@ public class CustomerController {
 		this.customerService = customerService;
 	}
 
-	@PostMapping("customer")
+	@PostMapping()
 	public ResponseEntity<String> addCustomer(@Valid @RequestBody CustomerDto dto) {
 		customerService.addCustomer(dto);
 		return new ResponseEntity<String>("Customer saved", HttpStatus.OK);
 	}
 
-	@GetMapping("customer")
+	@GetMapping()
 	public ResponseEntity<List<CustomerDto>> getAllCustomer() {
 
 		return new ResponseEntity<List<CustomerDto>>(customerService.getAllCustomers(), HttpStatus.OK);
 	}
 
-	@GetMapping("customer/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<CustomerDto> getCustomer(@PathVariable int id){
 		return new ResponseEntity <CustomerDto> (customerService.getCustomer(id),HttpStatus.OK);
 		
 	}
-	@PutMapping("customer/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<CustomerDto> updateCustomer(@PathVariable int id,@Valid @RequestBody CustomerDto dto){
 		return new ResponseEntity<CustomerDto>(customerService.updateCustomer(id, dto),HttpStatus.OK);
 	}
-	@DeleteMapping("customer/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteCustomer(@PathVariable int id){
 		customerService.deleteCustomer(id);
 		return new ResponseEntity<String>("Customer deleted",HttpStatus.OK);

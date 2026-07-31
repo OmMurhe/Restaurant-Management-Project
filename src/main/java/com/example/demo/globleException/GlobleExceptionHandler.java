@@ -13,19 +13,17 @@ import com.example.demo.exception.ProductServiceException;
 @ControllerAdvice
 @Component
 public class GlobleExceptionHandler {
-	
-	@ExceptionHandler
-	public ResponseEntity handleProductServiceException(ProductServiceException productException) {
-		return new ResponseEntity<>(productException.getMessage(),productException.getHttpStatus());
+	@ExceptionHandler(ProductServiceException.class)
+	public ResponseEntity<?> handleProductServiceException(ProductServiceException productException) {
+	    return new ResponseEntity<>(productException.getMessage(), productException.getHttpStatus());
 	}
-	
-	@ExceptionHandler
-	public ResponseEntity handleCustomerServiceException(CustomerServiceException customerException) {
-		return new ResponseEntity<>(customerException.getMessage(),customerException.getHttpStatus());
+	@ExceptionHandler(CustomerServiceException.class)
+	public ResponseEntity<?> handleCustomerServiceException(CustomerServiceException customerException) {
+	    return new ResponseEntity<>(customerException.getMessage(), customerException.getHttpStatus());
 	}
-	@ExceptionHandler
-	public ResponseEntity handleException(Exception e) {
-		return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<?> handleException(Exception e) {
+	    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
 	 @ExceptionHandler(MethodArgumentNotValidException.class)
