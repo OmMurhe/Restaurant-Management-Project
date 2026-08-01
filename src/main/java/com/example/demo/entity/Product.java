@@ -28,7 +28,7 @@ public class Product {
    private String url;
    @Column(name ="avalibility", nullable = false)
    private Boolean available;
-   @Column(name =" preparation_time", nullable = false)
+   @Column(name ="preparation_time", nullable = false)
    private Integer preparationTime;
    private LocalDate createdAt;
      
