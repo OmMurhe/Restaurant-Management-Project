@@ -1,5 +1,7 @@
 package com.example.demo.serviceImpl;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,7 @@ public class UserServiceImpl implements UserService{
 		}
 	
 		User user=UserMapper.mapToUser(dto);
+		user.setCreatedAt(LocalDate.now());
 		user.setActive(true);
 		userRepo.save(user);
 		
@@ -36,8 +39,12 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<UserDto> getAllUser() {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> users=userRepo.findAll();
+		if(users.isEmpty()) {
+			throw new UserServiceException("User not found",HttpStatus.NOT_FOUND);
+		}
+		
+		User user=
 	}
 
 	@Override

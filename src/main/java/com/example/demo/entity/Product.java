@@ -22,9 +22,13 @@ public class Product {
 	@Column(nullable = false, unique = true)
    private String name;
    private String description;
+   @Column(name ="product_price", nullable = false)
    private Integer price; 
+   @Column(name ="product_url", nullable = false)
    private String url;
+   @Column(name ="avalibility", nullable = false)
    private Boolean available;
+   @Column(name =" preparation_time", nullable = false)
    private Integer preparationTime;
    private LocalDate createdAt;
      
