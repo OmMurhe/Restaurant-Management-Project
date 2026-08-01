@@ -12,6 +12,7 @@ import com.example.demo.exception.ProductServiceException;
 import com.example.demo.exception.RestaurantTableServiceException;
 
 
+
 @ControllerAdvice
 @Component
 public class GlobleExceptionHandler {
