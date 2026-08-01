@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.example.demo.exception.ProductServiceException;
 import com.example.demo.exception.RestaurantTableServiceException;
-import com.example.demo.exception.UserServiceException;
 
 
 @ControllerAdvice
