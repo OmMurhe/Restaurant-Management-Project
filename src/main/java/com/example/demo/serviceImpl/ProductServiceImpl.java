@@ -71,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
 	public void deleteProduct(int id) {
 		productRepo.findById(id).orElseThrow( () ->  new ProductServiceException("Product not found",HttpStatus.NOT_FOUND));
 		productRepo.deleteById(id);
+		
 	}
 
 }

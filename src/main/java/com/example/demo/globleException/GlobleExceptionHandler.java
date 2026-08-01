@@ -11,23 +11,26 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.example.demo.exception.ProductServiceException;
 import com.example.demo.exception.RestaurantTableServiceException;
 
+
+
 @ControllerAdvice
 @Component
 public class GlobleExceptionHandler {
 	
 	@ExceptionHandler
-	public ResponseEntity handleProductServiceException(ProductServiceException productException) {
-		return new ResponseEntity<>(productException.getMessage(),productException.getHttpStatus());
+	public ResponseEntity<String> handleProductServiceException(ProductServiceException productException) {
+		return new ResponseEntity<>(productException.getErrorMessage(),productException.getHttpStatus());
 	}
 	@ExceptionHandler
-	public ResponseEntity handleRestraruantServiceException (RestaurantTableServiceException tableException) {
+	public ResponseEntity<String> handleRestraruantServiceException (RestaurantTableServiceException tableException) {
 		
 		
 		return new ResponseEntity<>(tableException.getErrorMsg(), tableException.getHttpStatus());
 	}
+
 	@ExceptionHandler
-	public ResponseEntity handleException(Exception e) {
-		return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+	public ResponseEntity<String> handleException(Exception e) {
+		return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 	}
 	
 	 @ExceptionHandler(MethodArgumentNotValidException.class)
