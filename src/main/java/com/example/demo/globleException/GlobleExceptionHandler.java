@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.example.demo.exception.ProductServiceException;
 import com.example.demo.exception.RestaurantTableServiceException;
+import com.example.demo.exception.UserServiceException;
 
 
 
@@ -21,11 +22,15 @@ public class GlobleExceptionHandler {
 	public ResponseEntity<String> handleProductServiceException(ProductServiceException productException) {
 		return new ResponseEntity<>(productException.getErrorMessage(),productException.getHttpStatus());
 	}
+	
+	@ExceptionHandler
+	public ResponseEntity<String> handleUserServiceException(UserServiceException userException) {
+		return new ResponseEntity<>(userException.getErrorMessage(),userException.getHttpStatus());
+	}
+	
 	@ExceptionHandler
 	public ResponseEntity<String> handleRestraruantServiceException (RestaurantTableServiceException tableException) {
-		
-		
-		return new ResponseEntity<>(tableException.getErrorMsg(), tableException.getHttpStatus());
+			return new ResponseEntity<>(tableException.getErrorMsg(), tableException.getHttpStatus());
 	}
 
 	@ExceptionHandler
