@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.example.demo.exception.ProductServiceException;
-<<<<<<< HEAD
-import com.example.demo.exception.UserServiceException;
-=======
 import com.example.demo.exception.RestaurantTableServiceException;
->>>>>>> main
+import com.example.demo.exception.UserServiceException;
+
 
 @ControllerAdvice
 @Component
@@ -24,16 +22,12 @@ public class GlobleExceptionHandler {
 		return new ResponseEntity<>(productException.getErrorMessage(),productException.getHttpStatus());
 	}
 	@ExceptionHandler
-	public ResponseEntity handleRestraruantServiceException (RestaurantTableServiceException tableException) {
+	public ResponseEntity<String> handleRestraruantServiceException (RestaurantTableServiceException tableException) {
 		
 		
 		return new ResponseEntity<>(tableException.getErrorMsg(), tableException.getHttpStatus());
 	}
-	@ExceptionHandler
-	public ResponseEntity<String> handleUserServiceException(UserServiceException userException) {
-		return new ResponseEntity<>(userException.getErrorMessage(),userException.getHttpStatus());
-	}
-	
+
 	@ExceptionHandler
 	public ResponseEntity<String> handleException(Exception e) {
 		return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
