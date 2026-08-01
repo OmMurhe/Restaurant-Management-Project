@@ -18,7 +18,7 @@ import com.example.demo.service.CustomerService;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-	private final CustomerRepo customerRepo;
+	private CustomerRepo customerRepo;
 
 	public CustomerServiceImpl(CustomerRepo customerRepo) {
 		this.customerRepo = customerRepo;

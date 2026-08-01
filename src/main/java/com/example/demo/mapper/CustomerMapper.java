@@ -6,7 +6,7 @@ import com.example.demo.entity.Customer;
 public class CustomerMapper {
 
 	public static Customer mapToCustomer(CustomerDto dto) {
-		if (dto == null) return null;
+		
 
 		Customer customer = new Customer();
 		customer.setName(dto.getName());
@@ -16,7 +16,7 @@ public class CustomerMapper {
 	}
 
 	public static CustomerDto mapToCustomerDto(Customer customer) {
-		if (customer == null) return null;
+
 
 		CustomerDto dto = new CustomerDto();
 		dto.setName(customer.getName());
