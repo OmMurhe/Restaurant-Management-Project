@@ -1,14 +1,19 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Dto.RestaurantTableDto;
-import com.example.demo.entity.RestaurantTable;
-import com.example.demo.mapper.RestaurantTableMapper;
 import com.example.demo.service.RestaurantTableService;
 
 import jakarta.validation.Valid;
@@ -17,57 +22,44 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/tables")
 public class RestaurantTableController {
 
-    @Autowired
-    private RestaurantTableService service;
+    private final RestaurantTableService service;
 
-    
+    public RestaurantTableController(RestaurantTableService service) {
+        this.service = service;
+    }
+
     @PostMapping
-    public RestaurantTableDto saveTable( @Valid @RequestBody RestaurantTableDto dto) {
+    public ResponseEntity<RestaurantTableDto> saveTable(@Valid @RequestBody RestaurantTableDto dto) {
 
-        RestaurantTable table = RestaurantTableMapper.mapToRestaurantTable(dto);
+        RestaurantTableDto savedTable = service.saveTable(dto);
 
-        RestaurantTable savedTable = service.saveTable(table);
-
-        return RestaurantTableMapper.mapToRestaurantTableDto(savedTable);
+        return new ResponseEntity<>(savedTable, HttpStatus.CREATED);
     }
 
-    
     @GetMapping
-    public List<RestaurantTableDto> getAllTables() {
+    public ResponseEntity<List<RestaurantTableDto>> getAllTables() {
 
-        return service.getAllTables()
-                .stream()
-                .map(RestaurantTableMapper::mapToRestaurantTableDto)
-                .collect(Collectors.toList());
+        return ResponseEntity.ok(service.getAllTables());
     }
 
-   
     @GetMapping("/{id}")
-    public RestaurantTableDto getTableById(@PathVariable Integer id) {
+    public ResponseEntity<RestaurantTableDto> getTableById(@PathVariable Integer id) {
 
-        RestaurantTable table = service.getTableById(id);
-
-        return RestaurantTableMapper.mapToRestaurantTableDto(table);
+        return ResponseEntity.ok(service.getTableById(id));
     }
 
-    
     @PutMapping("/{id}")
-    public RestaurantTableDto updateTable(@PathVariable Integer id,
-                                          @RequestBody RestaurantTableDto dto) {
+    public ResponseEntity<RestaurantTableDto> updateTable(@PathVariable Integer id,
+                                                          @Valid @RequestBody RestaurantTableDto dto) {
 
-        RestaurantTable table = RestaurantTableMapper.mapToRestaurantTable(dto);
-
-        RestaurantTable updatedTable = service.updateTable(id, table);
-
-        return RestaurantTableMapper.mapToRestaurantTableDto(updatedTable);
+        return ResponseEntity.ok(service.updateTable(id, dto));
     }
 
-   
     @DeleteMapping("/{id}")
-    public String deleteTable(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteTable(@PathVariable Integer id) {
 
         service.deleteTable(id);
 
-        return "Restaurant Table Deleted Successfully";
+        return ResponseEntity.ok("Restaurant Table Deleted Successfully");
     }
 }

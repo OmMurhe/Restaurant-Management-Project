@@ -1,60 +1,85 @@
 package com.example.demo.serviceImpl;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.Dto.RestaurantTableDto;
 import com.example.demo.entity.RestaurantTable;
 import com.example.demo.exception.RestaurantTableServiceException;
+import com.example.demo.mapper.RestaurantTableMapper;
 import com.example.demo.repositary.TableRepository;
 import com.example.demo.service.RestaurantTableService;
 
 @Service
-public class RestaurantTableServiceImpl implements RestaurantTableService{
+public class RestaurantTableServiceImpl implements RestaurantTableService {
 
-	
-	
-	 @Autowired
-	    private TableRepository repository;
+    private final TableRepository repository;
 
-	    @Override
-	    public RestaurantTable saveTable(RestaurantTable table) {
-	        return repository.save(table);
-	    }
+    public RestaurantTableServiceImpl(TableRepository repository) {
+        this.repository = repository;
+    }
 
-	    @Override
-	    public List<RestaurantTable> getAllTables() {
-	        return repository.findAll();
-	    }
+    @Override
+    public RestaurantTableDto saveTable(RestaurantTableDto dto) {
 
-	    @Override
-	    public RestaurantTable getTableById(Integer id) {
-	        return repository.findById(id).orElseThrow(() -> new RestaurantTableServiceException("Table not found",HttpStatus.NOT_FOUND));
+        RestaurantTable table = RestaurantTableMapper.mapToRestaurantTable(dto);
 
-	    }
+        RestaurantTable savedTable = repository.save(table);
 
-	    @Override
-	    public RestaurantTable updateTable(Integer id, RestaurantTable table) {
+        return RestaurantTableMapper.mapToRestaurantTableDto(savedTable);
+    }
 
-	        RestaurantTable existingTable = repository.findById(id)
-	                .orElseThrow(() -> new RestaurantTableServiceException("Table not found",HttpStatus.NOT_FOUND));
+    @Override
+    public List<RestaurantTableDto> getAllTables() {
 
-	        existingTable.setTableNo(table.getTableNo());
-	        existingTable.setQrCodes(table.getQrCodes());
-	        existingTable.setTabletStatus(table.getTabletStatus());
+        return repository.findAll()
+                .stream()
+                .map(RestaurantTableMapper::mapToRestaurantTableDto)
+                .collect(Collectors.toList());
+    }
 
-	        return repository.save(existingTable);
-	    }
+    @Override
+    public RestaurantTableDto getTableById(Integer id) {
 
-	    @Override
-	    public void deleteTable(Integer id) {
+        RestaurantTable table = repository.findById(id)
+                .orElseThrow(() ->
+                        new RestaurantTableServiceException(
+                                "Table not found",
+                                HttpStatus.NOT_FOUND));
 
-	        RestaurantTable existingTable = repository.findById(id)
-	                .orElseThrow(() -> new RestaurantTableServiceException("Table not found",HttpStatus.NOT_FOUND));
+        return RestaurantTableMapper.mapToRestaurantTableDto(table);
+    }
 
-	        repository.delete(existingTable);
-	    }
+    @Override
+    public RestaurantTableDto updateTable(Integer id, RestaurantTableDto dto) {
+
+        RestaurantTable existingTable = repository.findById(id)
+                .orElseThrow(() ->
+                        new RestaurantTableServiceException(
+                                "Table not found",
+                                HttpStatus.NOT_FOUND));
+
+        existingTable.setTableNo(dto.getTableNo());
+        existingTable.setQrCodes(dto.getQrCodes());
+        existingTable.setTabletStatus(dto.getTabletStatus());
+
+        RestaurantTable updatedTable = repository.save(existingTable);
+
+        return RestaurantTableMapper.mapToRestaurantTableDto(updatedTable);
+    }
+
+    @Override
+    public void deleteTable(Integer id) {
+
+        RestaurantTable existingTable = repository.findById(id)
+                .orElseThrow(() ->
+                        new RestaurantTableServiceException(
+                                "Table not found",
+                                HttpStatus.NOT_FOUND));
+
+        repository.delete(existingTable);
+    }
 }

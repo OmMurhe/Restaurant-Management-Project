@@ -9,8 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class RestaurantTableDto {
     private Integer id;
     @NotNull(message = "Please enter table number")

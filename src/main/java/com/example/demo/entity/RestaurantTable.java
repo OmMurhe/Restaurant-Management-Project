@@ -18,10 +18,7 @@ import lombok.Setter;
 @Data
 @Entity()
 @Table (name = "restaurant_table")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class RestaurantTable {
 	
 	@Id

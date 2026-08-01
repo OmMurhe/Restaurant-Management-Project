@@ -31,16 +31,9 @@ public class GlobleExceptionHandler {
 	}
 	
 	
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+	
 
-	    String message = ex.getBindingResult()
-	                       .getFieldError()
-	                       .getDefaultMessage();
 
-	    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-
-}
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
 

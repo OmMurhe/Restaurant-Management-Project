@@ -1,20 +1,18 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.example.demo.entity.RestaurantTable;
+import com.example.demo.Dto.RestaurantTableDto;
 
 public interface RestaurantTableService {
-	
-	RestaurantTable saveTable(RestaurantTable table);
 
-    List<RestaurantTable> getAllTables();
+    RestaurantTableDto saveTable(RestaurantTableDto dto);
 
-    RestaurantTable getTableById(Integer id);
+    List<RestaurantTableDto> getAllTables();
 
-    RestaurantTable updateTable(Integer id, RestaurantTable table);
+    RestaurantTableDto getTableById(Integer id);
+
+    RestaurantTableDto updateTable(Integer id, RestaurantTableDto dto);
 
     void deleteTable(Integer id);
-
 }
