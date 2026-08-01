@@ -8,31 +8,33 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.example.demo.exception.CustomerServiceException;
 import com.example.demo.exception.ProductServiceException;
 import com.example.demo.exception.RestaurantTableServiceException;
-
-
 
 @ControllerAdvice
 @Component
 public class GlobleExceptionHandler {
-	
-	@ExceptionHandler
-	public ResponseEntity<String> handleProductServiceException(ProductServiceException productException) {
-		return new ResponseEntity<>(productException.getErrorMessage(),productException.getHttpStatus());
+	@ExceptionHandler(ProductServiceException.class)
+	public ResponseEntity<?> handleProductServiceException(ProductServiceException productException) {
+	    return new ResponseEntity<>(productException.getMessage(), productException.getHttpStatus());
 	}
-	@ExceptionHandler
-	public ResponseEntity<String> handleRestraruantServiceException (RestaurantTableServiceException tableException) {
+
+	@ExceptionHandler(CustomerServiceException.class)
+	public ResponseEntity<?> handleCustomerServiceException(CustomerServiceException customerException) {
+	    return new ResponseEntity<>(customerException.getErrorMsg(), customerException.getHttpStatus());
+	}
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<?> handleException(Exception e) {
+	    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(RestaurantTableServiceException.class)
+	public ResponseEntity <?> handleRestaruantServiceException (RestaurantTableServiceException tableException) {
 		
 		
 		return new ResponseEntity<>(tableException.getErrorMsg(), tableException.getHttpStatus());
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<String> handleException(Exception e) {
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-	}
-	
 	 @ExceptionHandler(MethodArgumentNotValidException.class)
 	    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
 
