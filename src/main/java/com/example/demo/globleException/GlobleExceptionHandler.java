@@ -1,5 +1,6 @@
 package com.example.demo.globleException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,12 @@ public class GlobleExceptionHandler {
 	public ResponseEntity<String> handleProductServiceException(ProductServiceException productException) {
 		return new ResponseEntity<>(productException.getErrorMessage(),productException.getHttpStatus());
 	}
-	
+	@ExceptionHandler
+	public ResponseEntity handleRestraruantServiceException (RestaurantTableServiceException tableException) {
+		
+		
+		return new ResponseEntity<>(tableException.getErrorMsg(), tableException.getHttpStatus());
+	}
 	@ExceptionHandler
 	public ResponseEntity<String> handleUserServiceException(UserServiceException userException) {
 		return new ResponseEntity<>(userException.getErrorMessage(),userException.getHttpStatus());
@@ -40,4 +46,9 @@ public class GlobleExceptionHandler {
 	    }
 
 
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+
+	    return new ResponseEntity<>("Table number already exists.", HttpStatus.CONFLICT);
+	}
 }
