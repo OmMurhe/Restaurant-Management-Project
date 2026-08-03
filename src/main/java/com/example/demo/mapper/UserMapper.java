@@ -28,4 +28,14 @@ public class UserMapper {
 	    dto.setActive(user.isActive());
 	    return dto;
 	}
+	
+
+    public static void updateUserFromDto(UserDto dto, User user) {
+
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setMobileNumber(dto.getMobileNumber());
+        user.setPassword(dto.getPassword());
+        user.setRole(dto.getRole());
+    }
 }
