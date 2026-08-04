@@ -8,21 +8,23 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+<<<<<<< HEAD
 import com.example.demo.exception.DataIntegerityViolationEx;
+=======
+import com.example.demo.exception.CustomerServiceException;
+>>>>>>> 4bdc65e555d8eb7fa1500e59b8644c3fd1d478d8
 import com.example.demo.exception.ProductServiceException;
 import com.example.demo.exception.RestaurantTableServiceException;
 import com.example.demo.exception.UserServiceException;
 
-
-
 @ControllerAdvice
 @Component
 public class GlobleExceptionHandler {
-	
-	@ExceptionHandler
-	public ResponseEntity<String> handleProductServiceException(ProductServiceException productException) {
-		return new ResponseEntity<>(productException.getErrorMessage(),productException.getHttpStatus());
+	@ExceptionHandler(ProductServiceException.class)
+	public ResponseEntity<?> handleProductServiceException(ProductServiceException productException) {
+	    return new ResponseEntity<>(productException.getMessage(), productException.getHttpStatus());
 	}
+<<<<<<< HEAD
 	
 	@ExceptionHandler
 	public ResponseEntity<String> handleUserServiceException(UserServiceException userException) {
@@ -32,13 +34,24 @@ public class GlobleExceptionHandler {
 	@ExceptionHandler
 	public ResponseEntity<String> handleRestraruantServiceException (RestaurantTableServiceException tableException) {
 			return new ResponseEntity<>(tableException.getErrorMsg(), tableException.getHttpStatus());
+=======
+
+	@ExceptionHandler(CustomerServiceException.class)
+	public ResponseEntity<?> handleCustomerServiceException(CustomerServiceException customerException) {
+	    return new ResponseEntity<>(customerException.getErrorMsg(), customerException.getHttpStatus());
+	}
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<?> handleException(Exception e) {
+	    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	@ExceptionHandler(RestaurantTableServiceException.class)
+	public ResponseEntity <?> handleRestaruantServiceException (RestaurantTableServiceException tableException) {
+		
+		
+		return new ResponseEntity<>(tableException.getErrorMsg(), tableException.getHttpStatus());
+>>>>>>> 4bdc65e555d8eb7fa1500e59b8644c3fd1d478d8
 	}
 
-	@ExceptionHandler
-	public ResponseEntity<String> handleException(Exception e) {
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-	}
-	
 	 @ExceptionHandler(MethodArgumentNotValidException.class)
 	    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
 

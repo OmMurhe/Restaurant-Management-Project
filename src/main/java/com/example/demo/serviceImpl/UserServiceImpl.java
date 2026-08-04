@@ -81,8 +81,6 @@ public class UserServiceImpl implements UserService {
 		return UserMapper.mapToUserDto(updatedUser);
 		}
 	
-	
-
 	@Override
 	public void deleteUser(int id) {
 		User user = userRepo.findById(id)
