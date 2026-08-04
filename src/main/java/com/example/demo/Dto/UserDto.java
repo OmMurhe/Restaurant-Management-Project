@@ -16,18 +16,18 @@ import lombok.Setter;
 @Setter
 public class UserDto {
 	
-	@NotBlank(message = "Plese enter the name")
+	@NotBlank(message = "Please enter the name")
 	private String name;
 	
-	@NotBlank(message = "Plese enter the Email")
-	@Email(message = "Plese Entet valic email")
+	@NotBlank(message = "Please enter the Email")
+	@Email(message = "Please Enter valid Email")
 	private String email;
 	
-	@NotBlank(message = "Plese enter the password")
+	@NotBlank(message = "Please enter the password")
 	private String password;
 	
-	@NotBlank(message = "Plese enter mobile number")
-	@Pattern(regexp = "^[0-9]{10}$", message = "Mobile must be 10 digits")
+	@NotBlank(message = "Please enter mobile number")
+	@Pattern(regexp = "^[0-9]{10}$", message = "MobileNo must be 10 digits")
 	private String mobileNumber;
 	
      @NotNull(message = "Please select role")

@@ -30,7 +30,7 @@ public class User {
 	private String email;
 	@Column(nullable = false, unique = true)
 	private String mobileNumber;
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String password;
 	 @Enumerated(EnumType.STRING)
 	 @Column(nullable = false)
