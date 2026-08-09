@@ -1,6 +1,5 @@
 package com.example.demo.globleException;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -8,9 +7,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.example.demo.exception.DataIntegerityViolationEx;
 import com.example.demo.exception.CustomerServiceException;
 import com.example.demo.exception.ProductServiceException;
 import com.example.demo.exception.RestaurantTableServiceException;
+import com.example.demo.exception.UserServiceException;
 
 @ControllerAdvice
 @Component
@@ -19,7 +20,12 @@ public class GlobleExceptionHandler {
 	public ResponseEntity<?> handleProductServiceException(ProductServiceException productException) {
 	    return new ResponseEntity<>(productException.getMessage(), productException.getHttpStatus());
 	}
-
+	
+	@ExceptionHandler(UserServiceException.class)
+	public ResponseEntity<?> handleUserServiceException(UserServiceException userException) {
+		return new ResponseEntity<>(userException.getErrorMessage(),userException.getHttpStatus());
+	}
+	
 	@ExceptionHandler(CustomerServiceException.class)
 	public ResponseEntity<?> handleCustomerServiceException(CustomerServiceException customerException) {
 	    return new ResponseEntity<>(customerException.getErrorMsg(), customerException.getHttpStatus());
@@ -30,8 +36,6 @@ public class GlobleExceptionHandler {
 	}
 	@ExceptionHandler(RestaurantTableServiceException.class)
 	public ResponseEntity <?> handleRestaruantServiceException (RestaurantTableServiceException tableException) {
-		
-		
 		return new ResponseEntity<>(tableException.getErrorMsg(), tableException.getHttpStatus());
 	}
 
@@ -46,9 +50,9 @@ public class GlobleExceptionHandler {
 	    }
 
 
-	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+	@ExceptionHandler(DataIntegerityViolationEx.class)
+	public ResponseEntity<String> handleDataIntegrityViolation(DataIntegerityViolationEx ex) {
 
-	    return new ResponseEntity<>("Table number already exists.", HttpStatus.CONFLICT);
+	    return new ResponseEntity<>(ex.getErrorMsg(), ex.getHttpStatus());
 	}
 }
