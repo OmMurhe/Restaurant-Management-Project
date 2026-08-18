@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.example.demo.exception.CustomerServiceException;
+import com.example.demo.exception.OrderServiceException;
 import com.example.demo.exception.ProductServiceException;
 import com.example.demo.exception.RestaurantTableServiceException;
 
@@ -17,38 +18,42 @@ import com.example.demo.exception.RestaurantTableServiceException;
 public class GlobleExceptionHandler {
 	@ExceptionHandler(ProductServiceException.class)
 	public ResponseEntity<?> handleProductServiceException(ProductServiceException productException) {
-	    return new ResponseEntity<>(productException.getMessage(), productException.getHttpStatus());
+		return new ResponseEntity<>(productException.getMessage(), productException.getHttpStatus());
 	}
 
 	@ExceptionHandler(CustomerServiceException.class)
 	public ResponseEntity<?> handleCustomerServiceException(CustomerServiceException customerException) {
-	    return new ResponseEntity<>(customerException.getErrorMsg(), customerException.getHttpStatus());
+		return new ResponseEntity<>(customerException.getErrorMsg(), customerException.getHttpStatus());
 	}
+
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> handleException(Exception e) {
-	    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
+
 	@ExceptionHandler(RestaurantTableServiceException.class)
-	public ResponseEntity <?> handleRestaruantServiceException (RestaurantTableServiceException tableException) {
-		
-		
+	public ResponseEntity<?> handleRestaruantServiceException(RestaurantTableServiceException tableException) {
+
 		return new ResponseEntity<>(tableException.getErrorMsg(), tableException.getHttpStatus());
 	}
 
-	 @ExceptionHandler(MethodArgumentNotValidException.class)
-	    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+	@ExceptionHandler(OrderServiceException.class)
+	public ResponseEntity<?> handleOrderServiceException(OrderServiceException orderException) {
 
-	        String message = ex.getBindingResult()
-	                           .getFieldError()
-	                           .getDefaultMessage();
+		return new ResponseEntity<>(orderException.getErrorMessage(), orderException.getHttpStatus());
+	}
 
-	        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-	    }
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
 
+		String message = ex.getBindingResult().getFieldError().getDefaultMessage();
+
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
 
-	    return new ResponseEntity<>("Table number already exists.", HttpStatus.CONFLICT);
+		return new ResponseEntity<>("Table number already exists.", HttpStatus.CONFLICT);
 	}
 }
