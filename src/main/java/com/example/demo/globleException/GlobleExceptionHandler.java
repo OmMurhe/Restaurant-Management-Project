@@ -51,9 +51,5 @@ public class GlobleExceptionHandler {
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-
-		return new ResponseEntity<>("Table number already exists.", HttpStatus.CONFLICT);
-	}
+	
 }
