@@ -6,4 +6,5 @@ import com.example.demo.entity.RestaurantTable;
 
 public interface TableRepository extends JpaRepository<RestaurantTable, Integer> {
 
+	boolean existsByTableNo(String tableNo);
 }
