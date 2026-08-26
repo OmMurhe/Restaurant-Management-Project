@@ -25,6 +25,9 @@ public class ProductDto {
 	 @NotBlank(message = "Plese Provide The URL OF Image")
 	   private String url;
 	 
+	  @NotNull(message = "Category is required")
+	    private Long categoryId;
+	 
 	 @NotNull(message = "Plese Apply The Status")
 	   private Boolean available;
 	 

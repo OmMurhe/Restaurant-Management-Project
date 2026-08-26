@@ -7,8 +7,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.example.demo.exception.DataIntegerityViolationEx;
+import com.example.demo.exception.CategoryServiceException;
 import com.example.demo.exception.CustomerServiceException;
+import com.example.demo.exception.DataIntegerityViolationEx;
 import com.example.demo.exception.OrderServiceException;
 import com.example.demo.exception.ProductServiceException;
 import com.example.demo.exception.RestaurantTableServiceException;
@@ -19,7 +20,7 @@ import com.example.demo.exception.UserServiceException;
 public class GlobleExceptionHandler {
 	@ExceptionHandler(ProductServiceException.class)
 	public ResponseEntity<?> handleProductServiceException(ProductServiceException productException) {
-		return new ResponseEntity<>(productException.getMessage(), productException.getHttpStatus());
+	    return new ResponseEntity<>(productException.getErrorMessage(), productException.getHttpStatus());
 	}
 	
 	@ExceptionHandler(UserServiceException.class)
@@ -32,6 +33,10 @@ public class GlobleExceptionHandler {
 		return new ResponseEntity<>(customerException.getErrorMsg(), customerException.getHttpStatus());
 	}
 
+	@ExceptionHandler(CategoryServiceException.class)
+	public ResponseEntity<?> handleCategoryServiceException(CategoryServiceException categoryException) {
+		return new ResponseEntity<>(categoryException.getErrorMsg(),categoryException.getHttpStatus());
+	}
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> handleException(Exception e) {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
